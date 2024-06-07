@@ -1,0 +1,35 @@
+﻿@model Microsoft.AspNetCore.Identity.IdentityUser
+
+@{
+    <br>
+    ViewData["Title"] = "Edytuj Czytelnika";
+}
+
+<h1>Edytuj Czytelnika</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label">Nazwa Czytelnika</label>
+                <input asp-for="UserName" class="form-control" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Adres Email</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <br>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <input type="submit" value="Zapisz" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<div>
+    <a asp-action="Index" class="btn btn-secondary">Powrót do listy</a>
+</div>

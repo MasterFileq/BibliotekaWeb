@@ -1,0 +1,99 @@
+﻿@model IEnumerable<BibliotekaWeb.Models.Ksiazka>
+
+@{
+    <br>
+    ViewData["Title"] = "Lista Książek";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+{
+    <a asp-action="Create" class="btn btn-primary mt-2">Dodaj Nową Książkę</a>
+}
+
+<hr>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<h3>Wyszukaj Książki:</h3>
+
+<form asp-action="Index" method="get" class="form-inline mb-3">
+    <div class="input-group mb-3">
+        <input type="text" name="searchString" class="form-control" placeholder="Tytuł" aria-label="Tytuł" />
+        <input type="text" name="author" class="form-control" placeholder="Autor" aria-label="Autor" />
+        <input type="text" name="isbn" class="form-control" placeholder="ISBN" aria-label="ISBN" />
+        <select name="available" class="form-control" aria-label="Dostępność">
+            <option value="">Dostępność</option>
+            <option value="true">Dostępne</option>
+            <option value="false">Niedostępne</option>
+        </select>
+        <div class="input-group-append">
+            <button type="submit" class="btn btn-primary">Szukaj</button>
+        </div>
+    </div>
+</form>
+
+<div id="booksList">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.First().Tytul)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Autor)</th>
+                <th>@Html.DisplayNameFor(model => model.First().ISBN)</th>
+                <th>@Html.DisplayNameFor(model => model.First().Dostepnosc)</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@Html.DisplayFor(modelItem => item.Tytul)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Autor)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ISBN)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Dostepnosc)</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Szczegóły</a>
+                        @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edytuj</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Usuń</a>
+                        }
+                        @if (item.Dostepnosc)
+                        {
+                            <a asp-action="Wypozycz" asp-route-id="@item.Id" class="btn btn-success">Wypożycz</a>
+                        }
+                        else
+                        {
+                            @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+                            {
+                                <a asp-action="ZwrocByAdmin" asp-route-id="@item.Id" class="btn btn-primary">Zwróć</a>
+                            }
+                            else if (User.Identity.IsAuthenticated)
+                            {
+                                
+                            }
+                            else
+                            {
+                                <button class="btn btn-secondary" disabled>Niedostępna</button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,79 @@
+﻿@model IEnumerable<BibliotekaWeb.Models.Wypozyczenie>
+
+@{
+    ViewData["Title"] = "Historia Wypożyczeń";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h2>Aktywne Wypożyczenia</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().Ksiazka.Tytul)</th>
+            <th>@Html.DisplayNameFor(model => model.First().DataWypozyczenia)</th>
+            <th>@Html.DisplayNameFor(model => model.First().TerminZwrotu)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Kara)</th>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+            {
+                <th>Email</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(m => !m.CzyZwrócone))
+        {
+            var rowClass = "";
+            if (item.TerminZwrotu < DateTime.Now)
+            {
+                rowClass = "table-danger";
+            }
+            else
+            {
+                rowClass = "table-warning";
+            }
+
+            <tr class="@rowClass">
+                <td>@item.Ksiazka.Tytul</td>
+                <td>@item.DataWypozyczenia.ToShortDateString()</td>
+                <td>@item.TerminZwrotu.ToShortDateString()</td>
+                <td>@item.Kara</td>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+                {
+                    <td>@item.Czytelnik.Email</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h2>Archiwalne Wypożyczenia</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.First().Ksiazka.Tytul)</th>
+            <th>@Html.DisplayNameFor(model => model.First().DataWypozyczenia)</th>
+            <th>@Html.DisplayNameFor(model => model.First().TerminZwrotu)</th>
+            <th>@Html.DisplayNameFor(model => model.First().Kara)</th>
+            @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+            {
+                <th>Email</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Where(m => m.CzyZwrócone))
+        {
+            <tr class="table-success">
+                <td>@item.Ksiazka.Tytul</td>
+                <td>@item.DataWypozyczenia.ToShortDateString()</td>
+                <td>@item.TerminZwrotu.ToShortDateString()</td>
+                <td>@item.Kara</td>
+                @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+                {
+                    <td>@item.Czytelnik.Email</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

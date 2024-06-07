@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <br>
+    <h1 class="display-4">Witamy w BibliotekaWeb</h1>
+    <p class="lead">Zarządzaj swoją biblioteką w prosty i intuicyjny sposób</p>
+</div>
+
+<br>
+<div class="alert alert-info text-center" role="alert">
+    <h4 class="alert-heading">Informacje o preinstalowanych użytkownikach</h4>
+    <p>Aby ułatwić ocenianie aplikacji, przygotowane są konta użytkowników z różnymi rolami:</p>
+    @* <ul>
+        <li><strong>Administrator:</strong> Login: <code>a@b.c</code></li>
+        <li><strong>Bibliotekarz:</strong> Login: <code>b@c.d</code></li>
+        <li><strong>Czytelnik:</strong> Login: <code>c@d.e</code></li>
+    </ul> *@
+    <p><strong>Administrator:</strong>  <code>A@B.C</code></p>
+    <p><strong>Bibliotekarz:</strong>  <code>B@C.D</code></p>
+    <p><strong>Czytelnik:</strong>  <code>C@D.E</code></p>
+    <p>Wszystkie konta mają wspólne hasło: <strong><code>Aa123456!</code></strong></p>
+    <hr>
+    <p class="mb-0">Zaloguj się używając jednego z powyższych kont, aby przetestować funkcjonalności aplikacji</p>
+</div>
+<br>
+
+<div class="row">
+    @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz") || User.IsInRole("Czytelnik"))
+    {
+        <div class="col-md-4 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Biblioteka</h5>
+                    <p class="card-text">Przeglądaj ksiażki w prosty i przystępny sposób.</p>
+                    <a href="Ksiazkas/Index" class="btn btn-primary">Przeglądaj książki</a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("Administrator"))
+    {
+        <div class="col-md-4 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Zarządzanie użytkownikami</h5>
+                    <p class="card-text">Zarządzaj kontami użytkowników.</p>
+                    <a href="Czytelniks/Index" class="btn btn-primary">Przeglądaj użytkowników</a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+    {
+        <div class="col-md-4 text-center">
+            <div class="card mb-4 box-shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Zarządzanie wypożyczeniami</h5>
+                    <p class="card-text">Monitoruj i zarządzaj wypożyczeniami książek. Śledź terminy zwrotów.</p>
+                    <a href="Bibliotekarz/Index" class="btn btn-primary">Przeglądaj wypożyczenia</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <div class="jumbotron text-center">
+        <h2 class="display-5">Dlaczego warto korzystać z BibliotekaWeb?</h2>
+        <p class="lead">Nasza aplikacja oferuje szereg funkcji, które ułatwią zarządzanie Twoją biblioteką:</p>
+        <p>Intuicyjny interfejs użytkownika</p>
+        <p>Zaawansowane możliwości wyszukiwania książek</p>
+        <p>Łatwe zarządzanie użytkownikami i ich uprawnieniami</p>
+        <p>Automatyczne przypomnienia o terminach zwrotów</p>
+        <hr class="my-4">
+        <p>Zarejestruj się już dziś i zacznij korzystać z pełni możliwości naszej aplikacji!</p>
+        <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Register" role="button">Zarejestruj się</a>
+    </div>
+    <br>
+}

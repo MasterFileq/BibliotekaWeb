@@ -1,0 +1,67 @@
+﻿@model IEnumerable<BibliotekaWeb.Models.CzytelnikViewModel>
+
+@{
+    <br>
+    ViewData["Title"] = "Lista Czytelników";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (User.IsInRole("Administrator"))
+{
+    <a asp-action="Create" class="btn btn-primary">Dodaj Czytelnika</a>
+}
+
+<hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Nazwa Czytelnika
+            </th>
+            <th>
+                Adres Email
+            </th>
+            <th>
+                Ostatnia Wypożyczona Książka
+            </th>
+            <th>
+                Termin Zwrotu
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.User.UserName
+                </td>
+                <td>
+                    @item.User.Email
+                </td>
+                <td>
+                    @item.KsiazkaTytul
+                </td>
+                <td>
+                    @item.TerminZwrotu?.ToShortDateString()
+                </td>
+                <td>
+
+                    @if (User.IsInRole("Administrator"))
+                    {
+                        <a asp-action="Details" asp-route-id="@item.User.Id" class="btn btn-info">Szczegóły</a>
+                        <a asp-action="Edit" asp-route-id="@item.User.Id" class="btn btn-warning">Edytuj</a>
+                        <a class="btn btn-secondary disabled" role="button" aria-disabled="true">Usuń</a>
+                    }
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+                    {
+                        <a class="btn btn-secondary disabled" role="button" asp-action="AssignBook" asp-route-czytelnikId="@item.User.Id" class="btn btn-primary">Przypisz Książkę</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

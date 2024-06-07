@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IdentityUser
+
+@{
+    <br>
+    ViewData["Title"] = "Usuń Czytelnika";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h3>Czy na pewno chcesz usunąć tego czytelnika?</h3>
+<div>
+    <h4>@Model.Email</h4>
+    <hr />
+    <form asp-action="DeleteConfirmed" method="post">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Usuń" class="btn btn-danger" /> |
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    </form>
+</div>

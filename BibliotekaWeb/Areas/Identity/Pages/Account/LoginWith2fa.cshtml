@@ -1,0 +1,40 @@
+﻿@page
+@model LoginWith2faModel
+@{
+    <br>
+    ViewData["Title"] = "Uwierzytelnianie dwuetapowe";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<p>Twoje logowanie jest chronione przez aplikację uwierzytelniającą. Wprowadź kod z aplikacji poniżej.</p>
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-route-returnUrl="@Model.ReturnUrl">
+            <input asp-for="RememberMe" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.TwoFactorCode" class="form-control" autocomplete="off" placeholder="Kod dwuskładnikowy" />
+                <label asp-for="Input.TwoFactorCode" class="form-label">Kod dwuskładnikowy</label>
+                <span asp-validation-for="Input.TwoFactorCode" class="text-danger"></span>
+            </div>
+            <div class="form-check mb-3">
+                <input asp-for="Input.RememberMachine" class="form-check-input" />
+                <label asp-for="Input.RememberMachine" class="form-check-label">
+                    Zapamiętaj te urządzenie
+                </label>
+            </div>
+            <div>
+                <button type="submit" class="w-100 btn btn-lg btn-primary">Zaloguj się</button>
+            </div>
+        </form>
+    </div>
+</div>
+<p>
+    Nie masz dostępu do swojego urządzenia uwierzytelniającego? Możesz
+    <a id="recovery-code-login" asp-page="./LoginWithRecoveryCode" asp-route-returnUrl="@Model.ReturnUrl">zalogować się przy użyciu kodu odzyskiwania</a>.
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,46 @@
+﻿@model IEnumerable<BibliotekaWeb.Models.Wypozyczenie>
+
+@{
+    ViewData["Title"] = "Wypożyczenia";
+}
+<h1>@ViewData["Title"]</h1>
+<hr>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tytuł</th>
+            <th>Autor</th>
+            <th>Wypożyczający</th>
+            <th>Data Wypożyczenia</th>
+            <th>Termin Zwrotu</th>
+            <th>Kara</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            var rowClass = item.CzyZwrócone ? "table-success" :
+            item.TerminZwrotu < DateTime.Now ? "table-danger" : "table-warning";
+
+            <tr class="@rowClass">
+                <td>@item.Ksiazka.Tytul</td>
+                <td>@item.Ksiazka.Autor</td>
+                <td>@item.Czytelnik.Email</td>
+                <td>@item.DataWypozyczenia.ToShortDateString()</td>
+                <td>@item.TerminZwrotu.ToShortDateString()</td>
+                <td>@item.Kara.ToString("C")</td>
+                <td>
+                    @if (!item.CzyZwrócone)
+                    {
+                        <form asp-action="MarkAsReturned" method="post">
+                            <input type="hidden" name="id" value="@item.Id" />
+                            <button type="submit" class="btn btn-primary">Oznacz jako zwrócone</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

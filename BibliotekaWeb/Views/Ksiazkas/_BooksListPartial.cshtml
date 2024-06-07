@@ -1,0 +1,48 @@
+﻿@model IEnumerable<BibliotekaWeb.Models.Ksiazka>
+<br>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Tytul)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Autor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().ISBN)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.First().Dostepnosc)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tytul)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Autor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISBN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dostepnosc)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Szczegóły</a>
+                    @if (User.IsInRole("Administrator") || User.IsInRole("Bibliotekarz"))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edytuj</a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Usuń</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
