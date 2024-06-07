@@ -9,7 +9,8 @@ BibliotekaWeb to aplikacja webowa służąca do zarządzania biblioteką, umożl
 - Zarządzanie wypożyczeniami: monitorowanie i zarządzanie wypożyczeniami książek
 
 ## Technologia
-- .NET 8.0 
+- .NET 8.0
+- MS SQL server
 
 ## Instalacja i uruchomnienie
 
